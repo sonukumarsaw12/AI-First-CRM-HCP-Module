@@ -1,65 +1,68 @@
-# AI-First CRM Module: Log Interaction Screen (HCP)
+# 🚀 AI-First CRM: Intelligent HCP Interaction Portal
 
-This project is a complete production-ready AI-first CRM module built for pharmaceutical sales representatives to log interactions with Healthcare Professionals (HCPs) using a LangGraph AI agent powered by Groq (`gemma2-9b-it`).
+A production-ready, AI-native CRM module designed for pharmaceutical sales representatives. This system leverages **LangGraph** orchestration and **Llama 3.3 70B** (via Groq) to automate the entire interaction logging process through natural conversation.
 
-## Architecture
+---
 
-*   **Frontend**: React, Redux Toolkit, Tailwind CSS, Vite.
-    *   Features a split-screen UI. Left side: Read-only interaction form. Right side: AI Chat Assistant.
-    *   Dynamically updates via Redux upon receiving AI structure JSON payloads.
-*   **Backend**: FastAPI, SQLAlchemy, LangGraph, LangChain, PostgreSQL.
-    *   Implements an AI Agent workflow (`AgentState`) utilizing strict LLM Tool Binding (`bind_tools`).
-    *   No hardcoded `if-else` tool dispatching logic. The LLM dictates state changes entirely via function calling.
-*   **Database**: PostgreSQL providing persistence using SQLAlchemy ORM.
+## ✨ Key Features
 
-## Prerequisites
+- **🗣️ Natural Language Logging**: No manual form entry. Simply chat with the assistant to fill 11+ structured data fields.
+- **🧠 LangGraph Orchestration**: A stateful AI agent that decides when to log, edit, or suggest follow-ups using strictly bound tools (no hardcoded if-else logic).
+- **🎨 Premium UI**: A sleek, split-screen React interface with dynamic field updates, Redux state management, and an interactive sentiment system.
+- **☁️ Cloud Ready**: Pre-configured for seamless deployment to **Render** (Backend & Postgres) and **Vercel** (Frontend).
+- **📋 Full Extraction Support**: Extracts HCP Name, Type, Date, Time, Attendees, Topics, Materials, Samples, Sentiment, Outcomes, and Follow-ups.
 
-*   Docker & Docker Compose
-*   A valid [Groq API Key](https://console.groq.com/keys)
+---
 
-## Setup Instructions
+## 🛠️ Technology Stack
 
-1.  **Environment Setup**:
-    Copy the sample environment file to `.env` and fill in your Groq API Key.
-    ```bash
-    cp .env.example .env
-    ```
-    *Ensure `GROQ_API_KEY` is set to your actual key in `.env`.*
+- **Frontend**: React 19, Redux Toolkit, Tailwind CSS v4, Lucide Icons, Vite.
+- **Backend**: FastAPI, LangGraph, LangChain-Groq, SQLAlchemy ORM.
+- **LLM**: Llama 3.3 70B Versatile (via Groq API).
+- **Database**: PostgreSQL.
+- **Infrastructure**: Docker & Docker Compose.
 
-2.  **Start the Platform via Docker Compose**:
-    Build and spin up the PostgreSQL database, FastAPI backend, and React frontend together.
-    ```bash
-    docker-compose up --build
-    ```
+---
 
-3.  **Access the Application**:
-    *   **Frontend**: Navigate to `http://localhost:5173`
-    *   **Backend API Docs**: Navigate to `http://localhost:8000/docs`
+## 🚀 Quick Start
 
-## Features & Supported AI Tools
+### 1. Prerequisites
+- Docker & Docker Compose installed.
+- A [Groq API Key](https://console.groq.com/keys).
 
-The LangGraph Agent utilizes the following 5 distinct tools (found in `backend/tools/interaction_tools.py`):
-1.  **Log Interaction Tool**: Log a completely new interaction.
-2.  **Edit Interaction Tool**: Granularly modify a specific field without disrupting the rest of the form.
-3.  **Summarize Interaction Tool**: Condense verbose clinical notes.
-4.  **Suggest Follow-up Tool**: Recommend logical next steps based on conversational context.
-5.  **Extract Entities Tool**: Directly pull HCP aliases, clinical materials, or drugs.
+### 2. Environment Setup
+Create a `.env` file in the root directory:
+```env
+GROQ_API_KEY=your_groq_api_key_here
+DATABASE_URL=postgresql://crm_user:crm_password@db:5432/crm_db
+```
 
-## Example Prompts for Testing
+### 3. Run Locally (Docker)
+```bash
+docker-compose up --build
+```
+- **Frontend**: [http://localhost:5173](http://localhost:5173)
+- **Backend API**: [http://localhost:8000/docs](http://localhost:8000/docs)
 
-Try pasting these sequentially into the Chat Assistant:
+---
 
-1.  **Logging a new interaction**:
-    > "I just had a meeting with Dr. Adams. We discussed the new cardiology drug, CardioMax. He was very positive about it."
+## 🌐 Live Deployment Instructions
 
-2.  **Entity Extraction & Logging details**:
-    > "Add John Smith to the attendees list. Also, note that we shared the Phase IV clinical trial brochure."
+### Backend (Render)
+1. Deploy the `backend/` folder as a **Web Service**.
+2. Connect a **Render PostgreSQL** instance.
+3. Add `GROQ_API_KEY` and `DATABASE_URL` to environment variables.
 
-3.  **Editing specific fields (Testing `edit_interaction_tool`)**:
-    > "Actually, change the sentiment to negative, Dr. Adams had some concerns about side effects."
+### Frontend (Vercel)
+1. Deploy the `frontend/` folder to Vercel.
+2. Add `VITE_API_BASE_URL` pointing to your Render backend URL.
 
-4.  **Suggesting a follow-up (Testing `suggest_follow_up_tool`)**:
-    > "Given he was concerned, what should my follow-up action be?"
+---
 
-5.  **Summarizing (Testing `summarize_interaction_tool`)**:
-    > "Summarize the entire interaction so far into a short bullet point."
+## 🧪 Example prompt to test full extraction
+> *"I had a meeting with Dr. Ankit Sharma on 19 April 2025 at 4:30 pm. We discussed a new diabetes drug and its benefits over existing treatments. Dr. Sharma showed a positive attitude. Attendees included Dr. Ankit Sharma and his assistant Ravi. I shared a product brochure and provided 3 sample units. The outcome was that he agreed to try it with patients. For follow-up, he requested clinical trial data next week."*
+
+---
+
+## 🔒 License
+This project is built for evaluation purposes as part of the AI-First CRM (HCP Module) assessment.
