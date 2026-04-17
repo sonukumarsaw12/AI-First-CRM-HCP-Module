@@ -2,6 +2,8 @@
 
 A production-ready, AI-native CRM module designed for pharmaceutical sales representatives. This system leverages **LangGraph** orchestration and **Llama 3.3 70B** (via Groq) to automate the entire interaction logging process through natural conversation.
 
+###LIVE LINK: https://ai-first-crm-hcp-module-delta.vercel.app
+
 ---
 
 ## ✨ Key Features
