@@ -70,7 +70,7 @@ const InteractionForm = () => {
         <ReadOnlyField 
           label="Attendees" 
           className="md:col-span-2"
-          value={(Array.isArray(formData.attendees) && formData.attendees.length > 0) ? formData.attendees.join(", ") : ""} 
+          value={Array.isArray(formData.attendees) ? formData.attendees.join(", ") : formData.attendees} 
           icon={<Users size={14} />} 
         />
         

@@ -2,14 +2,28 @@ from langchain_core.tools import tool
 import json
 
 @tool
-def log_interaction_tool(hcp_name: str = None, interaction_type: str = None, topics: str = None, sentiment: str = None, date: str = None, time: str = None) -> str:
+def log_interaction_tool(
+    hcp_name: str = None, 
+    interaction_type: str = None, 
+    date: str = None, 
+    time: str = None,
+    attendees: str = None,
+    topics: str = None, 
+    sentiment: str = None, 
+    materials_shared: str = None,
+    samples_distributed: str = None,
+    outcomes: str = None,
+    follow_up: str = None
+) -> str:
     """
     Log a new interaction with an HCP. Use this when the user describes a meeting or interaction.
-    Extracts relevant details like hcp_name, topics, sentiment, etc.
+    Extracts all possible details mentioned.
     """
-    # In a real tool, this might write to DB directly, but for LangGraph, 
-    # we return a structured JSON string to represent the extracted entity updates.
-    data = {k: v for k, v in locals().items() if v is not None}
+    data = {"hcp_name": hcp_name, "interaction_type": interaction_type, "date": date, "time": time, 
+            "attendees": attendees, "topics": topics, "materials_shared": materials_shared, 
+            "samples_distributed": samples_distributed, "sentiment": sentiment, 
+            "outcomes": outcomes, "follow_up": follow_up}
+    data = {k: v for k, v in data.items() if v is not None}
     return json.dumps({"action": "log", "data": data})
 
 @tool
@@ -41,15 +55,35 @@ def suggest_follow_up_tool(context: str) -> str:
     return json.dumps({"action": "suggest_follow_up", "data": {"follow_up": context}})
 
 @tool
-def extract_entities_tool(text: str, hcp_name: str = None, drugs_mentioned: str = None, time: str = None, sentiment: str = None) -> str:
+def extract_entities_tool(
+    text: str, 
+    hcp_name: str = None, 
+    interaction_type: str = None,
+    date: str = None,
+    time: str = None,
+    attendees: str = None,
+    topics: str = None, 
+    sentiment: str = None,
+    materials_shared: str = None,
+    samples_distributed: str = None,
+    outcomes: str = None,
+    follow_up: str = None
+) -> str:
     """
-    Extract specific entities like HCP name, drugs (materials shared or topics), time, and sentiment from unstructured text.
+    Extract specific entities from unstructured text. Use this when the user mentions new details to be added.
     """
     data = {
         "hcp_name": hcp_name,
-        "topics": drugs_mentioned,
+        "interaction_type": interaction_type,
+        "date": date,
         "time": time,
-        "sentiment": sentiment
+        "attendees": attendees,
+        "topics": topics,
+        "sentiment": sentiment,
+        "materials_shared": materials_shared,
+        "samples_distributed": samples_distributed,
+        "outcomes": outcomes,
+        "follow_up": follow_up
     }
     data = {k: v for k, v in data.items() if v is not None}
     return json.dumps({"action": "extract", "data": data})

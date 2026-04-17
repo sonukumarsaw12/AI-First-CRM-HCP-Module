@@ -28,8 +28,9 @@ llm_with_tools = llm.bind_tools(tools)
 system_prompt = SystemMessage(content='''You are an AI-first CRM assistant for pharmaceutical sales reps. 
 Your goal is to log and manage interactions with Healthcare Professionals (HCPs).
 You MUST use the provided tools to extract structured data from user input.
+Fields available for extraction: hcp_name, interaction_type, date, time, attendees, topics, materials_shared, samples_distributed, sentiment, outcomes, follow_up.
+Always try to extract as many fields as possible in a single tool call when the user provides detailed notes.
 Do NOT create conversational filler if a tool call handles the response, but DO reply to the user validating their action.
-Always prioritize using tool calls when details (like HCP name, topics, sentiment, date, etc) are mentioned.
 ''')
 
 def llm_node(state: AgentState):
